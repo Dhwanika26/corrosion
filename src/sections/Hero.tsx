@@ -1,8 +1,9 @@
 "use client";
+import { useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import ArrowIcon from "@/assets/arrow-right.svg";
 import cogImage from "@/assets/robot.png";
-import { useRef } from "react";
-import Link from "next/link";
 
 export const Hero = () => {
   const heroRef = useRef(null);
@@ -33,10 +34,13 @@ export const Hero = () => {
           </div>
           {/* Image Section */}
           <div className="mt-20 md:mt-0 md:h-[600px] md:flex-1 relative flex justify-center md:justify-end">
-            <img 
-              src={cogImage.src} 
-              alt="Cog Image" 
+            <Image
+              src={cogImage}
+              alt="Cog Image"
+              width={500}
+              height={500}
               className="w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl"
+              priority
             />
           </div>
         </div>

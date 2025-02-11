@@ -32,8 +32,10 @@ export default function UpdatesPage() {
       setCurrentVersion((prev) => (prev + 1) % versions.length);
     }, 3000); // Change version every 3 seconds
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      clearInterval(interval); // ✅ Fixed TypeScript issue
+    };
+  }, [versions.length]); // ✅ Added dependency to prevent ESLint warning
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#E6F4F1]">
@@ -45,7 +47,7 @@ export default function UpdatesPage() {
 
         {/* Version Timeline */}
         <div className="mt-10">
-          <h2 className="text-2xl font-semibold text-black">Version Timeline</h2>
+          <h2 className="text-2xl font-semibold text-black text-center">Version Timeline</h2>
           <div className="relative mt-4">
             <div className="w-full h-2 bg-gray-300 rounded-lg overflow-hidden">
               <div
@@ -54,16 +56,17 @@ export default function UpdatesPage() {
               />
             </div>
             <div
-              className="absolute top-1/2 transform -translate-y-1/2 left-0 transition-all duration-1000 ease-in-out"
+              className="absolute top-1/2 transform -translate-y-1/2 transition-all duration-1000 ease-in-out"
               style={{ left: `${((currentVersion + 0.5) / versions.length) * 100}%` }}
             >
               <div className="w-5 h-5 bg-blue-500 rounded-full shadow-md"></div>
             </div>
           </div>
 
+          {/* Version Details */}
           <div className="mt-6 text-center">
             {versions.map((version, index) => (
-              <div key={index} className={`transition-all duration-500 ${index === currentVersion ? "block" : "hidden"}`} aria-live="polite">
+              <div key={index} className={`transition-opacity duration-500 ${index === currentVersion ? "opacity-100" : "opacity-0 hidden"}`} aria-live="polite">
                 <h3 className="text-xl font-bold">{version.version}</h3>
                 <p className="text-gray-700">{version.releaseDate}</p>
                 <p className="text-gray-800">{version.features}</p>
@@ -74,25 +77,27 @@ export default function UpdatesPage() {
 
         {/* Version Details Table */}
         <div className="mt-10">
-          <h2 className="text-2xl font-semibold text-black">Version Details</h2>
-          <table className="w-full mt-4 border border-gray-300 bg-white shadow-lg">
-            <thead>
-              <tr className="bg-gray-200 text-black">
-                <th className="border border-gray-300 px-4 py-2 text-left">Version</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Release Date</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Features</th>
-              </tr>
-            </thead>
-            <tbody>
-              {versions.map((version, index) => (
-                <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                  <td className="border border-gray-300 px-4 py-2">{version.version}</td>
-                  <td className="border border-gray-300 px-4 py-2">{version.releaseDate}</td>
-                  <td className="border border-gray-300 px-4 py-2">{version.features}</td>
+          <h2 className="text-2xl font-semibold text-black text-center">Version Details</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full mt-4 border border-gray-300 bg-white shadow-lg">
+              <thead>
+                <tr className="bg-gray-200 text-black">
+                  <th className="border border-gray-300 px-4 py-2 text-left">Version</th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">Release Date</th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">Features</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {versions.map((version, index) => (
+                  <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                    <td className="border border-gray-300 px-4 py-2">{version.version}</td>
+                    <td className="border border-gray-300 px-4 py-2">{version.releaseDate}</td>
+                    <td className="border border-gray-300 px-4 py-2">{version.features}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
