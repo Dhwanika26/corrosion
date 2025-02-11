@@ -2,7 +2,6 @@ import Image from "next/image";
 import corrosion from "../../assets/corroison.jpeg";
 import corrosion2 from "../../assets/corrosion2.jpeg";
 import newImage1 from "../../assets/banner2.png";
-import newImage2 from "../../assets/bg3.png";
 
 export default function AboutPage() {
   return (
