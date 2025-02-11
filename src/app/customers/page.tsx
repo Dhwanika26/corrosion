@@ -9,53 +9,10 @@ export default function ContactPage() {
     city: "",
     phone: "",
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
-    setError("");
-    setSuccess("");
-  };
-
-  const validateEmail = (email: string) => emailPattern.test(email);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const { name, email, city, phone } = formData;
-
-    // Validate inputs
-    if (!name || !email || !city || !phone) {
-      setError("All fields are required!");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    // Simulating API submission
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setSuccess("Message sent successfully!");
-        setFormData({ name: "", email: "", city: "", phone: "" });
-      } else {
-        setError("Something went wrong. Please try again later.");
-      }
-    } catch (err) {
-      setError("Error submitting the form. Please try again later.");
-    }
   };
 
   return (
@@ -108,13 +65,7 @@ export default function ContactPage() {
           </p>
         </div>
 
-        {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
-        {success && (
-          <div className="text-green-500 mb-4 text-center">{success}</div>
-        )}
-
         <form
-          onSubmit={handleSubmit}
           className="max-w-lg mx-auto bg-gray-100 p-8 rounded-lg shadow-md mt-10"
         >
           <div className="mb-4">
@@ -178,7 +129,7 @@ export default function ContactPage() {
           </div>
 
           <button
-            type="submit"
+            type="button"
             className="bg-[#0A6E4F] text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors w-full mt-4"
           >
             Submit
